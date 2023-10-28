@@ -1,68 +1,139 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>WhatsApp Link Generator</title>
     <style>
         body {
             background-color: #111;
             color: #fff;
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* Center horizontally */
             height: 100vh;
         }
 
         h1 {
             font-size: 24px;
+            display:inline-block;
         }
 
         p {
             font-size: 18px;
         }
 
-        input[type="text"] {
+        input[type="number"] {
             padding: 10px;
             border: none;
             background-color: #222;
             color: #fff;
             font-size: 16px;
             border-radius: 5px;
-            width: 200px;
-            margin: 10px;
+            width: 94%;
+            margin-bottom: 10px;
         }
 
         button {
             padding: 10px 20px;
-            background-color: #0077FF;
+            background-color: rgba(0, 0, 0, 0.0);
             color: #fff;
             border: none;
             cursor: pointer;
             font-size: 16px;
             border-radius: 5px;
+            border: 1px solid white;
+            width: 100%;
+            transition: background-color 0.1s;
+            /* Add transition effect */
+
         }
 
-            button:hover {
-                background-color: #0055CC;
-            }
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1)
+        }
 
         a {
             text-decoration: none;
             color: #00FF77;
         }
+
+        .content {
+            max-width: 500px;
+            /* Center the content horizontally */
+            padding: 20px;
+            /* Add some padding to the content */
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+
+    <style>
+                #background {
+            background-image: url("../img/backgrounds/1.jpg");
+            background-size: cover;
+            opacity: 0.05;
+            /* background:rgb(33, 11, 11); */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-position: center;
+            transition: background 3s;
+            /* Add a background transition */
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            /* background: green; */
+            /* margin: 6px; */
+            /* padding: 16px; */
+            width: 400px;
+            /* background: rgba(0, 0, 0, 0.2); */
+            overflow: hidden;
+
+
+        }
     </style>
 </head>
-<body>
-    <h1>WhatsApp Link Generator</h1>
-    <p>Enter a phone number (starting with 0) and click the button to generate a WhatsApp link:</p>
-    <input type="text" id="phoneNumber" placeholder="e.g., 0544444444">
-    <button onclick="generateWhatsAppLink()">Generate Link</button>
-    <p id="result"></p>
 
+<body>
+    <div id="background"></div>
+
+    <div class="container">
+        <div class="content">
+            
+            <h1>WhatsApp Link Generator</h1><span>/visit arik63.github.com</span>
+            <div class="content">
+                <p>Enter a phone number (starting with 0) and click the button or press Enter to generate a WhatsApp link:</p>
+                <form onsubmit="generateWhatsAppLink(); return false;">
+                    <input type="number" id="phoneNumber" placeholder="e.g., 0544444444">
+                    <button type="submit">Generate Link</button>
+                </form>
+                <p id="result"></p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    
     <script>
         function generateWhatsAppLink() {
             const phoneNumberInput = document.getElementById('phoneNumber');
@@ -70,6 +141,11 @@
 
             // Remove the leading 0 and create the WhatsApp link
             const sanitizedNumber = phoneNumber.replace(/^0+/, ''); // Remove leading 0s
+
+            if (sanitizedNumber.length !== 9) {
+                alert("Please enter a valid 9-digit phone number.");
+                return;
+            }
             const whatsappLink = `http://wa.me/972${sanitizedNumber}`;
 
             // Display the generated link
@@ -77,5 +153,26 @@
             resultElement.innerHTML = `<a href="${whatsappLink}" target="_blank">${whatsappLink}</a>`;
         }
     </script>
+    <script>
+            const images = [
+        "../img/backgrounds/1.jpg",
+        "../img/backgrounds/2.jpg",
+        "../img/backgrounds/3.jpg"
+    ]
+    const background = document.getElementById('background');
+    let currentImage = 0;
+
+
+    function changeBackground() {
+        currentImage = (currentImage + 1) % images.length;
+        const imageUrl = images[currentImage];
+        background.style.background = `url(${imageUrl}) center/cover no-repeat`;
+    }
+
+    setInterval(() => {
+        changeBackground();
+    }, 4000);
+    </script>
 </body>
+
 </html>

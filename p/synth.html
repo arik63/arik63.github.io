@@ -42,7 +42,7 @@
   </style>
 </head>
 <body>
-  <h1>JavaScript Piano with Effects</h1>
+  <h1>Smooth JavaScript Piano with Oscilloscope</h1>
   <div class="keyboard" id="keyboard">
     <div class="key" data-note="C4"></div>
     <div class="black-key" data-note="C#4"></div>
@@ -61,11 +61,8 @@
 
   <script>
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const attackTime = 0.1;
-    const releaseTime = 0.2;
-    const delayTime = 0.4;
-    const reverbImpulse = 'your-reverb-impulse-file.wav'; // Change to your reverb impulse file
-
+    const attackTime = 0.1; // Adjust the attack time (in seconds)
+    const releaseTime = 0.2; // Adjust the release time (in seconds)
     let oscillator = null;
 
     function playNote(frequency) {
@@ -78,32 +75,15 @@
       oscillator = audioContext.createOscillator();
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
+      
       const gainNode = audioContext.createGain();
       gainNode.gain.setValueAtTime(0, audioContext.currentTime);
       gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + attackTime);
       gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
 
       oscillator.connect(gainNode);
-
-      // Add delay effect
-      const delayNode = audioContext.createDelay();
-      delayNode.delayTime.setValueAtTime(delayTime, audioContext.currentTime);
-
-      // Add reverb effect
-      const convolverNode = audioContext.createConvolver();
-      const impulseResponseURL = reverbImpulse;
-      fetch(impulseResponseURL)
-        .then(response => response.arrayBuffer())
-        .then(data => audioContext.decodeAudioData(data))
-        .then(buffer => {
-          convolverNode.buffer = buffer;
-        });
-
-      gainNode.connect(delayNode);
-      delayNode.connect(convolverNode);
-      convolverNode.connect(audioContext.destination);
-
+      gainNode.connect(audioContext.destination);
+      
       oscillator.start();
       oscillator.stop(audioContext.currentTime + releaseTime);
     }

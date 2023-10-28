@@ -6,6 +6,10 @@
 
     <title>WhatsApp Link Generator</title>
     <style>
+        input:focus {
+            outline: none;
+        }
+
         body {
             background-color: #111;
             color: #fff;
@@ -21,7 +25,7 @@
 
         h1 {
             font-size: 24px;
-            display:inline-block;
+            display: inline-block;
         }
 
         p {
@@ -78,7 +82,7 @@
     </style>
 
     <style>
-                #background {
+        #background {
             background-image: url("../img/backgrounds/1.jpg");
             background-size: cover;
             opacity: 0.05;
@@ -109,6 +113,14 @@
 
 
         }
+
+        .mygit{
+            color:grey;
+            font-family: 'Courier New', Courier, monospace;
+            }
+            .mygit:hover{
+                text-decoration: underline;
+            }
     </style>
 </head>
 
@@ -117,23 +129,25 @@
 
     <div class="container">
         <div class="content">
-            
+
             <h1>WhatsApp Link Generator</h1><span>/visit arik63.github.com</span>
             <div class="content">
-                <p>Enter a phone number (starting with 0) and click the button or press Enter to generate a WhatsApp link:</p>
+                <p>Enter a phone number (starting with 0) and click the button or press Enter to generate a WhatsApp
+                    link:</p>
                 <form onsubmit="generateWhatsAppLink(); return false;">
                     <input type="number" id="phoneNumber" placeholder="e.g., 0544444444">
                     <button type="submit">Generate Link</button>
                 </form>
                 <p id="result"></p>
             </div>
+            <a class="mygit" href="https://arik63.github.io">>> https://arik63.github.io</a>
 
         </div>
 
     </div>
 
 
-    
+
     <script>
         function generateWhatsAppLink() {
             const phoneNumberInput = document.getElementById('phoneNumber');
@@ -154,24 +168,24 @@
         }
     </script>
     <script>
-            const images = [
-        "../img/backgrounds/1.jpg",
-        "../img/backgrounds/2.jpg",
-        "../img/backgrounds/3.jpg"
-    ]
-    const background = document.getElementById('background');
-    let currentImage = 0;
+        const images = [
+            "../img/backgrounds/1.jpg",
+            "../img/backgrounds/2.jpg",
+            "../img/backgrounds/3.jpg"
+        ]
+        const background = document.getElementById('background');
+        let currentImage = 0;
 
 
-    function changeBackground() {
-        currentImage = (currentImage + 1) % images.length;
-        const imageUrl = images[currentImage];
-        background.style.background = `url(${imageUrl}) center/cover no-repeat`;
-    }
+        function changeBackground() {
+            currentImage = (currentImage + 1) % images.length;
+            const imageUrl = images[currentImage];
+            background.style.background = `url(${imageUrl}) center/cover no-repeat`;
+        }
 
-    setInterval(() => {
-        changeBackground();
-    }, 4000);
+        setInterval(() => {
+            changeBackground();
+        }, 4000);
     </script>
 </body>
 

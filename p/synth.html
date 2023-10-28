@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      text-align: center;
+      background-color: #121212;
+      color: #FFFFFF;
+    }
+
+    .keyboard {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .key {
+      width: 40px;
+      height: 200px;
+      background-color: #FFFFFF;
+      border: 1px solid #000;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .black-key {
+      position: relative;
+      width: 20px;
+      height: 120px;
+      background-color: #000;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 5px;
+      z-index: 1;
+    }
+
+    canvas {
+      width: 100%;
+      height: 150px;
+    }
+  </style>
+</head>
+<body>
+  <h1>JavaScript Piano with Effects</h1>
+  <div class="keyboard" id="keyboard">
+    <div class="key" data-note="C4"></div>
+    <div class="black-key" data-note="C#4"></div>
+    <div class="key" data-note="D4"></div>
+    <div class="black-key" data-note="D#4"></div>
+    <div class="key" data-note="E4"></div>
+    <div class="key" data-note="F4"></div>
+    <div class="black-key" data-note="F#4"></div>
+    <div class="key" data-note="G4"></div>
+    <div class="black-key" data-note="G#4"></div>
+    <div class="key" data-note="A4"></div>
+    <div class="black-key" data-note="A#4"></div>
+    <div class="key" data-note="B4"></div>
+  </div>
+  <canvas id="oscilloscope"></canvas>
+
+  <script>
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const attackTime = 0.1;
+    const releaseTime = 0.2;
+    const delayTime = 0.4;
+    const reverbImpulse = 'your-reverb-impulse-file.wav'; // Change to your reverb impulse file
+
+    let oscillator = null;
+
+    function playNote(frequency) {
+      if (oscillator) {
+        const now = audioContext.currentTime;
+        oscillator.stop(now + releaseTime);
+        oscillator.disconnect();
+      }
+
+      oscillator = audioContext.createOscillator();
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + attackTime);
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + releaseTime);
+
+      oscillator.connect(gainNode);
+
+      // Add delay effect
+      const delayNode = audioContext.createDelay();
+      delayNode.delayTime.setValueAtTime(delayTime, audioContext.currentTime);
+
+      // Add reverb effect
+      const convolverNode = audioContext.createConvolver();
+      const impulseResponseURL = reverbImpulse;
+      fetch(impulseResponseURL)
+        .then(response => response.arrayBuffer())
+        .then(data => audioContext.decodeAudioData(data))
+        .then(buffer => {
+          convolverNode.buffer = buffer;
+        });
+
+      gainNode.connect(delayNode);
+      delayNode.connect(convolverNode);
+      convolverNode.connect(audioContext.destination);
+
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + releaseTime);
+    }
+
+    const keys = document.querySelectorAll('.key, .black-key');
+    const oscilloscopeCanvas = document.getElementById('oscilloscope');
+    const oscilloscopeContext = oscilloscopeCanvas.getContext('2d');
+
+    function visualize() {
+      const analyser = audioContext.createAnalyser();
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+      analyser.fftSize = 256;
+
+      oscillator.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      function drawOscilloscope() {
+        analyser.getByteTimeDomainData(dataArray);
+        oscilloscopeContext.fillStyle = '#121212';
+        oscilloscopeContext.fillRect(0, 0, oscilloscopeCanvas.width, oscilloscopeCanvas.height);
+        oscilloscopeContext.lineWidth = 2;
+        oscilloscopeContext.strokeStyle = '#FFFFFF';
+        oscilloscopeContext.beginPath();
+
+        const sliceWidth = oscilloscopeCanvas.width * 1.0 / bufferLength;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const v = dataArray[i] / 128.0;
+          const y = v * oscilloscopeCanvas.height / 2;
+          if (i === 0) {
+            oscilloscopeContext.moveTo(x, y);
+          } else {
+            oscilloscopeContext.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+
+        oscilloscopeContext.lineTo(oscilloscopeCanvas.width, oscilloscopeCanvas.height / 2);
+        oscilloscopeContext.stroke();
+        requestAnimationFrame(drawOscilloscope);
+      }
+      drawOscilloscope();
+    }
+
+    keys.forEach((key) => {
+      key.addEventListener('click', function() {
+        const note = this.getAttribute('data-note');
+        const frequency = noteToFrequency(note);
+        playNote(frequency);
+      });
+    });
+
+    function noteToFrequency(note) {
+      const A4 = 440;
+      const semitone = Math.pow(2, 1 / 12);
+      const distanceFromA4 = NOTES.indexOf(note) - NOTES.indexOf('A4');
+      return A4 * Math.pow(semitone, distanceFromA4);
+    }
+
+    const NOTES = ['C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4'];
+
+    document.addEventListener('keydown', function(event) {
+      const keyMap = {
+        'a': 'C4',
+        'w': 'C#4',
+        's': 'D4',
+        'e': 'D#4',
+        'd': 'E4',
+        'f': 'F4',
+        't': 'F#4',
+        'g': 'G4',
+        'y': 'G#4',
+        'h': 'A4',
+        'u': 'A#4',
+        'j': 'B4',
+      };
+      const note = keyMap[event.key];
+      if (note) {
+        const frequency = noteToFrequency(note);
+        playNote(frequency);
+      }
+    });
+
+    document.addEventListener('keyup', function(event) {
+      if (oscillator) {
+        const now = audioContext.currentTime;
+        oscillator.stop(now + releaseTime);
+        oscillator.disconnect();
+        oscillator = null;
+      }
+    });
+
+    visualize();
+  </script>
+</body>
+</html>

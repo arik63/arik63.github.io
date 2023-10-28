@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .drum-pad {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            background-color: #333;
+            color: #fff;
+            font-size: 24px;
+            line-height: 100px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>808 Drum Pads</h1>
+    <div class="drum-pad" onclick="playSound('kick')">Kick</div>
+    <div class="drum-pad" onclick="playSound('snare')">Snare</div>
+    <div class="drum-pad" onclick="playSound('hihat')">Hi-Hat</div>
+    <div class="drum-pad" onclick="playSound('clap')">Clap</div>
+
+    <audio id="kick">
+        <source src="808-kick.wav" type="audio/wav">
+    </audio>
+
+    <audio id="snare">
+        <source src="808-snare.wav" type="audio/wav">
+    </audio>
+
+    <audio id="hihat">
+        <source src="808-hihat.wav" type="audio/wav">
+    </audio>
+
+    <audio id="clap">
+        <source src="808-clap.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        function playSound(id) {
+            const audio = document.getElementById(id);
+            audio.currentTime = 0; // Reset the audio to the beginning
+            audio.play();
+        }
+    </script>
+</body>
+</html>

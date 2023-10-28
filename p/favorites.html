@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Favorite Websites</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: none;
+            background-color: #222;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #0077FF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 150px; /* Make the button the same width as the inputs */
+        }
+
+            button:hover {
+                background-color: #0055CC;
+            }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .favorite-link {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+
+            .favorite-link a {
+                text-decoration: none;
+                color: #00FF77;
+            }
+
+        .remove-button {
+            background-color: #FF0000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+            .remove-button:hover {
+                background-color: #CC0000;
+            }
+
+        .copy-button {
+            background-color: #00FF00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+            .copy-button:hover {
+                background-color: #00CC00;
+            }
+    </style>
+</head>
+<body>
+    <h1>Favorite Websites</h1>
+    <p>Enter the name and link of your favorite website:</p>
+    <input type="text" id="websiteName" placeholder="Website Name">
+    <input type="text" id="websiteLink" placeholder="Website Link">
+    <button onclick="addFavorite()">Add to Favorites</button>
+    <ul id="favoritesList"></ul>
+
+    <script>
+        function addFavorite() {
+            const websiteNameInput = document.getElementById('websiteName');
+            const websiteLinkInput = document.getElementById('websiteLink');
+            const websiteName = websiteNameInput.value;
+            const websiteLink = websiteLinkInput.value;
+
+            if (websiteName && websiteLink) {
+                const favoritesList = document.getElementById('favoritesList');
+                const li = document.createElement('li');
+                li.className = 'favorite-link';
+                li.innerHTML = `
+                        <a href="${websiteLink}" target="_blank">${websiteName}</a>
+                        <button class="remove-button" onclick="removeFavorite(this)">Remove</button>
+                        <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+                    `;
+                favoritesList.appendChild(li);
+
+                // Store the favorites in local storage
+                saveFavoritesToLocalStorage();
+
+                // Clear input fields
+                websiteNameInput.value = '';
+                websiteLinkInput.value = '';
+            }
+        }
+
+        function removeFavorite(button) {
+            const li = button.parentElement;
+            const favoritesList = document.getElementById('favoritesList');
+            favoritesList.removeChild(li);
+
+            // Store the updated favorites in local storage
+            saveFavoritesToLocalStorage();
+        }
+
+        function copyToClipboard(button) {
+            const link = button.parentElement.querySelector('a');
+            const textArea = document.createElement('textarea');
+            textArea.value = link.href;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            alert('Link copied to clipboard!');
+        }
+
+        function saveFavoritesToLocalStorage() {
+            const favorites = [];
+            const favoriteLinks = document.querySelectorAll('.favorite-link a');
+            favoriteLinks.forEach(link => {
+                favorites.push({ name: link.textContent, link: link.href });
+            });
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        function loadFavoritesFromLocalStorage() {
+            const favoritesList = document.getElementById('favoritesList');
+            const favoritesData = localStorage.getItem('favorites');
+
+            if (favoritesData) {
+                const favorites = JSON.parse(favoritesData);
+
+                favorites.forEach(favorite => {
+                    const li = document.createElement('li');
+                    li.className = 'favorite-link';
+                    li.innerHTML = `
+                            <a href="${favorite.link}" target="_blank">${favorite.name}</a>
+                            <button class="remove-button" onclick="removeFavorite(this)">Remove</button>
+                            <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+                        `;
+                    favoritesList.appendChild(li);
+                });
+            }
+        }
+
+        // Load saved favorites when the page loads
+        loadFavoritesFromLocalStorage();
+    </script>
+</body>
+</html>

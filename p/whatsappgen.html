@@ -20,7 +20,7 @@
         }
         h1 {
             font-size: 24px;
-            margin:0px;
+            margin: 0px;
             display: inline-block;
         }
         p {
@@ -38,7 +38,7 @@
         }
         button {
             padding: 10px 20px;
-            margin-bottom:10px;
+            margin-bottom: 10px;
             background-color: rgba(0, 0, 0, 0.0);
             color: #fff;
             border: none;
@@ -93,6 +93,9 @@
         .mygit:hover {
             text-decoration: underline;
         }
+        #copyButton {
+            display: none; /* Initially hide the Copy to Clipboard button */
+        }
     </style>
 </head>
 <body>
@@ -101,13 +104,14 @@
         <div class="content">
             <h1>Send WhatApp link</h1>
             <div class="content">
-                <p>Enter a phone number (starting with 0 for israel area or + for any other) </p>
+                <p>Enter a phone number (starting with 0 for Israel area or + for any other) </p>
                 <form onsubmit="generateWhatsAppLink(); return false;">
-                    <input type="number" id="phoneNumber" placeholder="e.g., 0544444444">
+                    <input type="number" id="phoneNumber" placeholder="e.g., 0544444444" autofocus>
                     <button id="redirectButton" onclick="redirectToWhatsApp()">Send message</button>
                     <button type="submit">Generate Link</button>
                 </form>
                 <p id="result"></p>
+                <button id="copyButton" onclick="copyLinkToClipboard()">Copy link</button>
             </div>
             <a class="mygit" href="https://arik63.github.io">>> https://arik63.github.io</a>
         </div>
@@ -124,14 +128,32 @@
             const whatsappLink = `http://wa.me/972${sanitizedNumber}`;
             const resultElement = document.getElementById('result');
             resultElement.innerHTML = `<a href="${whatsappLink}" target="_blank">${whatsappLink}</a>`;
+            
+            // Show the Copy to Clipboard button when the link is generated
+            const copyButton = document.getElementById('copyButton');
+            copyButton.style.display = 'block';
         }
 
         function redirectToWhatsApp() {
-            generateWhatsAppLink()
+            generateWhatsAppLink();
             const resultElement = document.getElementById('result');
             const link = resultElement.querySelector('a');
             if (link) {
                 window.open(link.getAttribute('href'), '_blank');
+            }
+        }
+
+        function copyLinkToClipboard() {
+            const resultElement = document.getElementById('result');
+            const link = resultElement.querySelector('a');
+            if (link) {
+                const textArea = document.createElement('textarea');
+                textArea.value = link.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                // alert('Link copied to clipboard!');
             }
         }
     </script>
@@ -140,17 +162,7 @@
             "../img/backgrounds/1.jpg",
             "../img/backgrounds/2.jpg",
             "../img/backgrounds/3.jpg"
-        ]
+        ];
         const background = document.getElementById('background');
         let currentImage = 0;
         function changeBackground() {
-            currentImage = (currentImage + 1) % images.length;
-            const imageUrl = images[currentImage];
-            background.style.background = `url(${imageUrl}) center/cover no-repeat`;
-        }
-        setInterval(() => {
-            changeBackground();
-        }, 4000);
-    </script>
-</body>
-</html>

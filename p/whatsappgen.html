@@ -67,7 +67,7 @@
     </style>
     <style>
         #background {
-            background-image: url("../img/backgrounds/1.jpg");
+            background-image: url("../img/backgrounds/3.jpg");
             background-size: cover;
             opacity: 0.05;
             position: absolute;
@@ -166,3 +166,13 @@
         const background = document.getElementById('background');
         let currentImage = 0;
         function changeBackground() {
+            currentImage = (currentImage + 1) % images.length;
+            const imageUrl = images[currentImage];
+            background.style.background = `url(${imageUrl}) center/cover no-repeat`;
+        }
+        setInterval(() => {
+            changeBackground();
+        }, 4000);
+    </script>
+</body>
+</html>

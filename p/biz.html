@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body{
+            background:rgb(9, 9, 9);
+            color:rgb(105, 105, 105);
+            font-size:30px;
+            overflow: hidden;
+
+        }
+        .container{
+            text-align: justify;
+            width:100%;
+            height:100%;
+            overflow: hidden;
+
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        ••○◘•○•
+    </div>
+</body>
+</html>
+
+<script>
+
+let container = document.querySelector(".container");
+
+container.innerHTML ="a•••"
+
+
+function generateRandomString(length) {
+  const characters = '↕‼☼♪♀☼↕♫☺☺♂♀♪♫♪♀'; // Define the characters you want to use
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    result += characters.charAt(randomIndex);
+  }
+  return result;
+
+}
+
+
+setInterval(() => {
+    container.innerHTML = generateRandomString(150000);
+}, 100);
+
+
+
+
+</script>

@@ -11,8 +11,8 @@
             background-color: #111;
             color: #fff;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            /* margin: 0; */
+            /* padding: 0; */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -20,6 +20,7 @@
         }
         h1 {
             font-size: 24px;
+            margin:0px;
             display: inline-block;
         }
         p {
@@ -57,7 +58,7 @@
         }
         .content {
             max-width: 500px;
-            padding: 20px;
+            padding: 10px;
         }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -82,7 +83,7 @@
             align-items: center;
         }
         .content {
-            width: 400px;
+            /* width: 400px; */
             overflow: hidden;
         }
         .mygit {
@@ -98,9 +99,9 @@
     <div id="background"></div>
     <div class="container">
         <div class="content">
-            <h1>WhatsApp Link Generator</h1>
+            <h1>Send WhatApp link</h1>
             <div class="content">
-                <p>Enter a phone number (starting with 0) and click the button or press Enter to generate a WhatsApp link:</p>
+                <p>Enter a phone number (starting with 0 for israel area or + for any other) </p>
                 <form onsubmit="generateWhatsAppLink(); return false;">
                     <input type="number" id="phoneNumber" placeholder="e.g., 0544444444">
                     <button id="redirectButton" onclick="redirectToWhatsApp()">Send message</button>

@@ -1,165 +1,162 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0c10">
+    <title>// under renovation</title>
     <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: black;
-            /* background-position: ; */
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
+            background: #0a0c10;
+            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #e2e8f0;
         }
 
-        #background {
-            background-image: url("img/backgrounds/1.jpg");
-            background-size: cover;
-            opacity: 0.3;
-            /* background:rgb(33, 11, 11); */
-            position: absolute;
+        /* subtle scanline / code glow */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background-position: center;
-            transition: background 3s;
-            /* Add a background transition */
-
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.02) 0px, rgba(0, 255, 255, 0.02) 1px, transparent 1px, transparent 8px);
+            pointer-events: none;
         }
 
-        .container {
+        .terminal {
+            max-width: 560px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* prompt line */
+        .prompt {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: #6ee7ff;
+            margin-bottom: 1.8rem;
+            font-weight: 500;
+        }
+
+        .prompt-sign {
+            color: #3bffb0;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2rem;
+            background-color: #9effcf;
+            vertical-align: middle;
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #e2e8f0, #8ab3ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .message {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin: 1.2rem 0;
+            border-left: 2px solid #2d68b0;
+            padding-left: 1rem;
+            text-align: left;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .code-line {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #5f7f9e;
+            margin-top: 2rem;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
         }
 
-        .content {
-            /* background: green; */
-            margin: 6px;
-            padding: 16px;
-            width: 400px;
-            /* background: rgba(0, 0, 0, 0.2); */
-            overflow: hidden;
-
-
+        hr {
+            width: 60px;
+            margin: 1.5rem auto 0;
+            border: 0;
+            height: 1px;
+            background: #2d3e5f;
         }
 
         a {
-            color: white;
+            color: #6aa9ff;
             text-decoration: none;
-            transition: color 0.2s;
-            display: block;
-            /* Add a color transition */
-
+            border-bottom: 1px dotted #3b82f6;
         }
 
         a:hover {
-            cursor: pointer;
-            /* text-decoration: underline; */
-            color: rgb(82, 82, 226);
+            color: #9effcf;
         }
 
-        h2 {
-            margin-bottom: 4px;
+        /* minimal & clean */
+        .footer {
+            font-size: 0.7rem;
+            color: #3f5e7e;
+            margin-top: 2rem;
         }
     </style>
-    <style>
-        .led-sign {
-            margin-top:20px;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: nowrap;
-            color: rgb(0, 13, 255);
-            font-size: 24px;
-            animation: moveLeft 16s linear infinite;
-        }
-
-        @keyframes moveLeft {
-            0% {
-                transform: translateX(110%);
-            }
-
-            100% {
-                transform: translateX(-690%);
-            }
-        }
-        
-    </style>
-
-    <style>
-        
-    </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 </head>
-
 <body>
-    <div id="background"></div>
-
-    <div class="container">
-        <div class="content">
-            <h1>//arik63.gitgub.io</h1>
-            <h2>/pieces:</h2>
-            <a href="p/whatsappgen.html">WhatsApp send message link</a>
-            <a href="p/tools.html">Cmd Tools</a>
-            <a href="p/favorites.html">Favorites tool</a>
-            <a href="p/biz.html">chaoz1</a>
-            <a href="p/biz2.html">chaoz2</a>
-            <a href="p/biz3.html">chaoz3</a>
-            <a href="p/drums.html">808 drums</a>
-            <a href="p/favorites.html">woodworking</a>
-            <a href="p/synth.html">synth</a>
-
-
-
-            <h2>/srcs:</h2>
-            <a href="">youtube</a>
-            <a href="">linkdein</a>
-            <a href="">spotify</a>
-            <a href="p/favorites.html">Favorites tool</a>
-            <a href="">beha</a>
-
-            <div class="led-sign">
-                WELCOME TO MY PROFILE • A VERSION 2 OF THE WHATSAPP LINK GEN IS UNDERCONSTRUCTION,
-                pateint, will be worth it :)
-            </div>
-
-
-
-
-        </div>
-
+<div class="terminal">
+    <div class="prompt">
+        <span class="prompt-sign">➜</span>
+        <span>~/github/index</span>
+        <span class="cursor"></span>
     </div>
 
+    <h1>under renovation</h1>
+
+    <div class="message">
+        <span style="color:#8ab3ff;">//</span> fresh code & design in progress.<br>
+        back online soon.
+    </div>
+
+    <div class="code-line">
+        <span>✦</span> <span>git status — rebuilding</span> <span>✦</span>
+    </div>
+
+    <hr>
+
+    <div class="footer">
+        <span>🚧</span> <a href="#">github pages</a> · maintenance mode
+    </div>
+</div>
 </body>
-
-
-<script>
-    const images = [
-        "img/backgrounds/1.jpg",
-        "img/backgrounds/3.jpg"
-    ]
-    const background = document.getElementById('background');
-    let currentImage = 0;
-
-
-    function changeBackground() {
-        currentImage = (currentImage + 1) % images.length;
-        const imageUrl = images[currentImage];
-        background.style.background = `url(${imageUrl}) center/cover no-repeat`;
-    }
-
-    setInterval(() => {
-        changeBackground();
-    }, 4000);
-
-
-</script>
-
 </html>

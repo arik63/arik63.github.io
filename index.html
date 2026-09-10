@@ -1,162 +1,249 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a0c10">
-    <title>// under renovation</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0a0c10" />
+<title>arik63 / projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #10141c;
+    --surface-2: #161b26;
+    --text: #e2e8f0;
+    --text-dim: #8fa3bd;
+    --text-faint: #52708f;
+    --border: #223049;
+    --border-soft: #1a2333;
+    --cyan: #6ee7ff;
+    --green: #3bffb0;
+    --blue: #8ab3ff;
+  }
 
-        body {
-            background: #0a0c10;
-            font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            color: #e2e8f0;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* subtle scanline / code glow */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.02) 0px, rgba(0, 255, 255, 0.02) 1px, transparent 1px, transparent 8px);
-            pointer-events: none;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+  }
 
-        .terminal {
-            max-width: 560px;
-            width: 100%;
-            text-align: center;
-        }
+  /* subtle scanline / crt texture, same signature as the maintenance page */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(110, 231, 255, 0.02) 0px,
+      rgba(110, 231, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 8px
+    );
+    pointer-events: none;
+  }
 
-        /* prompt line */
-        .prompt {
-            display: inline-flex;
-            align-items: baseline;
-            gap: 0.5rem;
-            font-size: 1rem;
-            color: #6ee7ff;
-            margin-bottom: 1.8rem;
-            font-weight: 500;
-        }
+  .terminal {
+    max-width: 620px;
+    width: 100%;
+  }
 
-        .prompt-sign {
-            color: #3bffb0;
-        }
+  .prompt {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--cyan);
+    font-weight: 500;
+    margin-bottom: 1.6rem;
+  }
 
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 1.2rem;
-            background-color: #9effcf;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-            margin-left: 4px;
-        }
+  .prompt-sign { color: var(--green); }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.1rem;
+    background-color: #9effcf;
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
 
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 500;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, #e2e8f0, #8ab3ff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-        }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 
-        .message {
-            font-size: 0.95rem;
-            color: #94a3b8;
-            line-height: 1.5;
-            margin: 1.2rem 0;
-            border-left: 2px solid #2d68b0;
-            padding-left: 1rem;
-            text-align: left;
-            max-width: 380px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    text-wrap: balance;
+    background: linear-gradient(135deg, #e2e8f0, var(--blue));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 1rem;
+  }
 
-        .code-line {
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #5f7f9e;
-            margin-top: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
+  .message {
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin: 1.2rem 0 2rem;
+    border-left: 2px solid #2d68b0;
+    padding-left: 1rem;
+  }
 
-        hr {
-            width: 60px;
-            margin: 1.5rem auto 0;
-            border: 0;
-            height: 1px;
-            background: #2d3e5f;
-        }
+  .message .cmt { color: var(--blue); }
 
-        a {
-            color: #6aa9ff;
-            text-decoration: none;
-            border-bottom: 1px dotted #3b82f6;
-        }
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 
-        a:hover {
-            color: #9effcf;
-        }
+  .project-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 8px;
+    padding: 1rem 1.15rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
 
-        /* minimal & clean */
-        .footer {
-            font-size: 0.7rem;
-            color: #3f5e7e;
-            margin-top: 2rem;
-        }
-    </style>
+  .project-row:hover,
+  .project-row:focus-visible {
+    border-color: var(--row-accent, var(--cyan));
+    background: var(--surface-2);
+    transform: translateX(2px);
+  }
+
+  .project-row:focus-visible { outline: 2px solid var(--row-accent, var(--cyan)); outline-offset: 2px; }
+
+  .proj-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--row-accent, var(--cyan));
+    grid-row: 1 / 3;
+    align-self: start;
+    padding-top: 0.15rem;
+  }
+
+  .proj-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .proj-desc {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    grid-column: 2;
+    grid-row: 2;
+    line-height: 1.5;
+  }
+
+  .proj-arrow {
+    grid-row: 1 / 3;
+    color: var(--row-accent, var(--cyan));
+    font-size: 1.1rem;
+    justify-self: end;
+  }
+
+  .row-taskboard { --row-accent: var(--cyan); }
+  .row-syncvault { --row-accent: var(--green); }
+  .row-pdfs { --row-accent: var(--blue); }
+
+  hr {
+    width: 60px;
+    margin: 2.2rem 0 0;
+    border: 0;
+    height: 1px;
+    background: #2d3e5f;
+  }
+
+  a { color: var(--blue); text-decoration: none; border-bottom: 1px dotted #3b82f6; }
+  a:hover { color: var(--green); }
+
+  .footer {
+    font-size: 0.75rem;
+    color: #52708f;
+    margin-top: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer a { border-bottom-color: #2d68b0; }
+
+  @media (max-width: 480px) {
+    .project-row { grid-template-columns: auto 1fr; }
+    .proj-arrow { display: none; }
+    h1 { font-size: 2rem; }
+  }
+</style>
 </head>
 <body>
 <div class="terminal">
-    <div class="prompt">
-        <span class="prompt-sign">➜</span>
-        <span>~/github/index</span>
-        <span class="cursor"></span>
-    </div>
+  <div class="prompt">
+    <span class="prompt-sign">➜</span>
+    <span>~/arik63/github</span>
+    <span class="cursor"></span>
+  </div>
 
-    <h1>under renovation</h1>
+  <h1>projects</h1>
 
-    <div class="message">
-        <span style="color:#8ab3ff;">//</span> fresh code & design in progress.<br>
-        back online soon.
-    </div>
+  <div class="message">
+    <span class="cmt">//</span> renovation's over. three shipped things, pick one to open.
+  </div>
 
-    <div class="code-line">
-        <span>✦</span> <span>git status — rebuilding</span> <span>✦</span>
-    </div>
+  <div class="projects">
+    <a class="project-row row-taskboard" href="https://github.com/arik63/task-board-pro" target="_blank" rel="noopener">
+      <span class="proj-tag">01</span>
+      <span class="proj-name">Task Board Pro</span>
+      <span class="proj-desc">Real-time task board — Express + Socket.IO, multi-device sync, JWT auth.</span>
+      <span class="proj-arrow">↗</span>
+    </a>
 
-    <hr>
+    <a class="project-row row-syncvault" href="https://github.com/arik63/syncvault" target="_blank" rel="noopener">
+      <span class="proj-tag">02</span>
+      <span class="proj-name">SyncVault</span>
+      <span class="proj-desc">Backup &amp; mirror control panel — disk monitoring, scheduled rsync, live admin dashboard.</span>
+      <span class="proj-arrow">↗</span>
+    </a>
 
-    <div class="footer">
-        <span>🚧</span> <a href="#">github pages</a> · maintenance mode
-    </div>
+    <a class="project-row row-pdfs" href="https://github.com/arik63/pdfs" target="_blank" rel="noopener">
+      <span class="proj-tag">03</span>
+      <span class="proj-name">PDFS</span>
+      <span class="proj-desc">In-browser PDF editor — edit, merge and mark up documents without leaving the tab.</span>
+      <span class="proj-arrow">↗</span>
+    </a>
+  </div>
+
+  <hr>
+
+  <div class="footer">
+    <span>✦</span> <a href="https://github.com/arik63" target="_blank" rel="noopener">github.com/arik63</a> · building in public
+  </div>
 </div>
 </body>
 </html>

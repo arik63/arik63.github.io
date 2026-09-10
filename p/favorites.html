@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- -----------------------------------------------------------  -->
+
+    <div id="background"></div>
+
+    <div class="container">
+        <div class="content">
+
+            <h1>Favorites page</h1>
+            <div class="content">
+                <p>Enter a phone number (starting with 0) and click the button or press Enter to generate a WhatsApp
+                    link:</p>
+                <form onsubmit="addToFavorite(); return false;">
+                    <input type="text" id="url" placeholder="address">
+                    <input type="text" id="name" placeholder="name">
+                    <button type="submit">Generate Link</button>
+                </form>
+                <p id="result"></p>
+            </div>
+            <a class="mygit" href="https://arik63.github.io">>> https://arik63.github.io</a>
+            <script>
+                const addToFavorite = () => {
+                    let url = document.querySelector("#url").value;
+
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        // If it doesn't start with either, add "https"
+                        url = "https://" + url;
+                    }
+
+
+                    let name = document.querySelector("#name").value;
+
+                    const div = document.getElementById("favorites"); // Get the div by its ID
+                    const newElement = document.createElement("p"); // Create a new element (e.g., a paragraph)
+                    newElement.innerHTML = `
+                        <a href="${url}">${name}</a>
+                        <button>Visit</button>
+                        <button>Edit</button>
+                        <button>Remove</button>
+                    `
+                        ; // Set the content of the new element
+                    newElement.classList.add("web"); // Add a class to the new element
+
+                    div.appendChild(newElement); // Append the new element to the div
+
+
+                }
+            </script>
+
+
+            <div id="favorites">
+                <div class="web">
+                    <a href="www.yad2.co.il">Yad2</a>
+                    <button>Visit</button>
+                    <button>Edit</button>
+                    <button>Remove</button>
+                </div>
+                <div class="web">
+                    <a href="www.yad2.co.il">Yad2</a>
+                    <button>Visit</button>
+                    <button>Edit</button>
+                    <button>Remove</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- -----------------------------------------------------------  -->
+    <style>
+        input:focus {
+            outline: none;
+        }
+
+        .web {
+            margin: 10px;
+        }
+
+        .web button {
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.0);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid white;
+            /* width: 100%; */
+            transition: background-color 0.1s;
+        }
+
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Center horizontally */
+            height: 100vh;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: none;
+            background-color: #222;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 94%;
+            margin-bottom: 10px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.0);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid white;
+            width: 100%;
+            transition: background-color 0.1s;
+            /* Add transition effect */
+
+        }
+
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1)
+        }
+
+        a {
+            text-decoration: none;
+            color: #00FF77;
+        }
+    </style>
+
+    <style>
+        #background {
+            background-image: url("../img/backgrounds/1.jpg");
+            background-size: cover;
+            opacity: 0.05;
+            /* background:rgb(33, 11, 11); */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-position: center;
+            transition: background 3s;
+            /* Add a background transition */
+
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            /* background: green; */
+            /* margin: 6px; */
+            /* padding: 16px; */
+            width: 400px;
+            /* background: rgba(0, 0, 0, 0.2); */
+            overflow: hidden;
+
+
+        }
+
+        .mygit {
+            color: grey;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .mygit:hover {
+            text-decoration: underline;
+        }
+    </style>
+</body>
+
+</html>

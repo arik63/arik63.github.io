@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Link Generator</title>
+    <style>
+        input:focus {
+            outline: none;
+        }
+        body {
+            background-color: #111;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            /* margin: 0; */
+            /* padding: 0; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 0px;
+            display: inline-block;
+        }
+        p {
+            font-size: 18px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: none;
+            background-color: #222;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 5px;
+            width: 94%;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.0);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid white;
+            width: 100%;
+            transition: background-color 0.1s;
+        }
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        a {
+            text-decoration: none;
+            color: #00FF77;
+        }
+        .content {
+            max-width: 500px;
+            padding: 10px;
+        }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+    <style>
+        #background {
+            background-image: url("../img/backgrounds/3.jpg");
+            background-size: cover;
+            opacity: 0.05;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-position: center;
+            transition: background 3s;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .content {
+            /* width: 400px; */
+            overflow: hidden;
+        }
+        .mygit {
+            color: grey;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .mygit:hover {
+            text-decoration: underline;
+        }
+        #copyButton {
+            display: none; /* Initially hide the Copy to Clipboard button */
+        }
+    </style>
+</head>
+<body>
+    <div id="background"></div>
+    <div class="container">
+        <div class="content">
+            <h1>Send WhatApp link</h1>
+            <div class="content">
+                <p>Enter a phone number (starting with 0 for Israel area or + for any other) </p>
+                <form onsubmit="generateWhatsAppLink(); return false;">
+                    <input type="number" id="phoneNumber" placeholder="e.g., 0544444444" autofocus>
+                    <button id="redirectButton" onclick="redirectToWhatsApp()">Send message</button>
+                    <button type="submit">Generate Link</button>
+                </form>
+                <p id="result"></p>
+                <button id="copyButton" onclick="copyLinkToClipboard()">Copy link</button>
+            </div>
+            <a class="mygit" href="https://arik63.github.io">>> https://arik63.github.io</a>
+        </div>
+    </div>
+    <script>
+        function generateWhatsAppLink() {
+            const phoneNumberInput = document.getElementById('phoneNumber');
+            const phoneNumber = phoneNumberInput.value;
+            const sanitizedNumber = phoneNumber.replace(/^0+/, ''); // Remove leading 0s
+            if (sanitizedNumber.length !== 9) {
+                alert("Please enter a valid 9-digit phone number.");
+                return;
+            }
+            const whatsappLink = `http://wa.me/972${sanitizedNumber}`;
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `<a href="${whatsappLink}" target="_blank">${whatsappLink}</a>`;
+            
+            // Show the Copy to Clipboard button when the link is generated
+            const copyButton = document.getElementById('copyButton');
+            copyButton.style.display = 'block';
+        }
+
+        function redirectToWhatsApp() {
+            generateWhatsAppLink();
+            const resultElement = document.getElementById('result');
+            const link = resultElement.querySelector('a');
+            if (link) {
+                window.open(link.getAttribute('href'), '_blank');
+            }
+        }
+
+        function copyLinkToClipboard() {
+            const resultElement = document.getElementById('result');
+            const link = resultElement.querySelector('a');
+            if (link) {
+                const textArea = document.createElement('textarea');
+                textArea.value = link.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                // alert('Link copied to clipboard!');
+            }
+        }
+    </script>
+    <script>
+        const images = [
+            "../img/backgrounds/1.jpg",
+            "../img/backgrounds/2.jpg",
+            "../img/backgrounds/3.jpg"
+        ];
+        const background = document.getElementById('background');
+        let currentImage = 0;
+        function changeBackground() {
+            currentImage = (currentImage + 1) % images.length;
+            const imageUrl = images[currentImage];
+            background.style.background = `url(${imageUrl}) center/cover no-repeat`;
+        }
+        setInterval(() => {
+            changeBackground();
+        }, 4000);
+    </script>
+</body>
+</html>
